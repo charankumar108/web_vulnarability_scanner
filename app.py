@@ -13,7 +13,12 @@ from fpdf import FPDF
 # Suppress insecure request warnings if scanning internal/self-signed targets
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+if not os.path.isdir(TEMPLATES_DIR):
+    TEMPLATES_DIR = os.path.join(os.getcwd(), "templates")
+
+app = Flask(__name__, template_folder=TEMPLATES_DIR)
 app.secret_key = os.environ.get("SECRET_KEY", "vuln-scanner-prod-key-default")
 
 def sanitize_pdf_text(text):

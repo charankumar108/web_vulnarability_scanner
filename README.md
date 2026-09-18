@@ -52,7 +52,15 @@ You can then run `python scanner.py` with no arguments, and it will automaticall
 
 This project is configured for out-of-the-box deployment to cloud platforms.
 
-### 1. Render / Railway / Heroku
+### 1. Netlify Deployment
+The repository includes pre-configured serverless WSGI support (`netlify.toml` and `netlify/functions/server.py`).
+To deploy to Netlify:
+1. Log in to [Netlify](https://app.netlify.com).
+2. Click **"Add new site"** -> **"Import an existing project"**.
+3. Select **GitHub** and choose `charankumar108/web_vulnarability_scanner`.
+4. Netlify will automatically detect `netlify.toml` and deploy your application.
+
+### 2. Render / Railway / Heroku
 The repository contains a `Procfile`, `runtime.txt`, and `render.yaml`.
 - **Render**: Connect your GitHub repository to [Render](https://render.com). Render will automatically detect `render.yaml` or you can create a Web Service with:
   - **Build Command**: `pip install -r requirements.txt`
@@ -60,7 +68,7 @@ The repository contains a `Procfile`, `runtime.txt`, and `render.yaml`.
   - **Health Check Path**: `/health`
 - **Heroku / Railway**: Connect the repo; the `Procfile` (`web: gunicorn app:app --bind 0.0.0.0:$PORT`) is auto-detected.
 
-### 2. Docker Deployment
+### 3. Docker Deployment
 You can build and run using Docker:
 ```bash
 # Build the Docker image
