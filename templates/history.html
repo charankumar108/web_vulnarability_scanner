@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Vul Scan | Scan History</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = { darkMode: "class", theme: { extend: { colors: { background: "#0b1326", "surface-container": "#171f33", primary: "#8ed5ff", secondary: "#4edea3", "on-surface": "#dae2fd", "outline-variant": "#3e484f" } } } }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-sans overflow-x-hidden">
+<header class="fixed top-0 z-50 flex justify-between items-center w-full px-6 h-16 border-b border-outline-variant bg-background">
+    <div class="flex items-center gap-4">
+        <span class="text-2xl font-bold text-primary">Vul Scan</span>
+    </div>
+</header>
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col border-r border-outline-variant bg-surface-container z-40 hidden md:flex">
+    <nav class="flex-1 py-4 overflow-y-auto">
+        <a class="flex items-center gap-4 px-6 py-2 text-gray-400 hover:bg-gray-800 hover:text-white" href="/">
+            <span class="material-symbols-outlined">security</span> <span class="text-xs font-bold uppercase tracking-widest">Scans</span>
+        </a>
+        <a class="flex items-center gap-4 px-6 py-2 text-primary border-l-2 border-primary bg-gray-800" href="/history">
+            <span class="material-symbols-outlined">history</span> <span class="text-xs font-bold uppercase tracking-widest">History / Reports</span>
+        </a>
+    </nav>
+</aside>
+<main class="md:ml-64 pt-24 min-h-screen px-8">
+    <h1 class="text-3xl font-bold text-primary mb-6">Scan History & Reports</h1>
+    <div class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden">
+        <table class="w-full text-left text-sm">
+            <thead class="bg-gray-800 text-xs uppercase text-gray-400">
+                <tr>
+                    <th class="px-6 py-4">ID</th>
+                    <th class="px-6 py-4">Target</th>
+                    <th class="px-6 py-4">Time</th>
+                    <th class="px-6 py-4">Findings (C/H/M/L)</th>
+                    <th class="px-6 py-4">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant">
+                {% for scan in history %}
+                <tr class="hover:bg-gray-800/50">
+                    <td class="px-6 py-4 font-mono">{{ scan.id }}</td>
+                    <td class="px-6 py-4">{{ scan.target }}</td>
+                    <td class="px-6 py-4 text-gray-400">{{ scan.time }}</td>
+                    <td class="px-6 py-4 text-gray-400">
+                        <span class="text-red-400">{{ scan.stats.Critical }}</span> /
+                        <span class="text-orange-400">{{ scan.stats.High }}</span> /
+                        <span class="text-blue-400">{{ scan.stats.Medium }}</span> /
+                        <span class="text-green-400">{{ scan.stats.Low }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/export_pdf/{{ scan.id }}" class="text-primary hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">download</span> PDF
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-gray-500">No previous scans found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
