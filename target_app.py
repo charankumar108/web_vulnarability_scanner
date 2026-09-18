@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, render_template_string
 
 app = Flask(__name__)
@@ -49,5 +50,7 @@ def index():
     return render_template_string(HTML_PAGE, query=query, user_id=user_id)
 
 if __name__ == "__main__":
-    # Runs the vulnerable application on port 8080
-    app.run(debug=True, port=8080)
+    # Runs the vulnerable application on configured port (default: 8080)
+    port = int(os.environ.get("PORT", 8080))
+    debug = os.environ.get("FLASK_DEBUG", "false").lower() in ("true", "1")
+    app.run(host="0.0.0.0", port=port, debug=debug)

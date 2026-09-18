@@ -48,6 +48,36 @@ python target_app.py
 This starts the dummy target on `http://localhost:8080`.
 You can then run `python scanner.py` with no arguments, and it will automatically execute a mock simulation showing how the scanner detects vulnerabilities.
 
+## Production & Cloud Deployment
+
+This project is configured for out-of-the-box deployment to cloud platforms.
+
+### 1. Render / Railway / Heroku
+The repository contains a `Procfile`, `runtime.txt`, and `render.yaml`.
+- **Render**: Connect your GitHub repository to [Render](https://render.com). Render will automatically detect `render.yaml` or you can create a Web Service with:
+  - **Build Command**: `pip install -r requirements.txt`
+  - **Start Command**: `gunicorn app:app --bind 0.0.0.0:$PORT`
+  - **Health Check Path**: `/health`
+- **Heroku / Railway**: Connect the repo; the `Procfile` (`web: gunicorn app:app --bind 0.0.0.0:$PORT`) is auto-detected.
+
+### 2. Docker Deployment
+You can build and run using Docker:
+```bash
+# Build the Docker image
+docker build -t vul-scan .
+
+# Run container on port 5000
+docker run -p 5000:5000 -e PORT=5000 vul-scan
+```
+Access the application at `http://localhost:5000`.
+
+### 3. Environment Variables
+| Variable | Description | Default |
+|---|---|---|
+| `PORT` | Web server listening port | `5000` |
+| `FLASK_DEBUG` | Enable Flask debug mode (`true`/`false`) | `false` |
+| `SECRET_KEY` | Flask session secret key | (default generated key) |
+
 ## Disclaimer
 This project is built for educational and ethical hacking purposes. Only scan applications and networks for which you have explicit permission.
-"# web_vulnarability_scanner"  
+
